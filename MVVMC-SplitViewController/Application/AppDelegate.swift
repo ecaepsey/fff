@@ -10,14 +10,14 @@ import UIKit
 import RxSwift
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UIGestureRecognizerDelegate {
 
     var window: UIWindow?
     private var appCoordinator: AppCoordinator!
     private let disposeBag = DisposeBag()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+      
         self.window = UIWindow(frame: UIScreen.main.bounds)
 
         self.appCoordinator = AppCoordinator(window: self.window!)
@@ -32,8 +32,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 })
         #endif
         */
+        
+        setupGlobalAccessToDebugScreen()
+
         return true
     }
+    
+    func setupGlobalAccessToDebugScreen() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        tapGesture.delegate = self
+        tapGesture.numberOfTapsRequired = 6
+        self.window?.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func tapped() {
+        
+    }
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+          return true
+       }
+    
+    
+   
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -56,5 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    
 
 }
+
+
